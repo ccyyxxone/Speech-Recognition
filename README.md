@@ -28,7 +28,7 @@ Lab3
 - Part 3: Implement Witten-Bell smoothing 
 - Write code to compute LM probabilities for an n-gram model smoothed with Witten-Bell smoothing.
 - Part 4: Evaluate various n-gram models on the task of N-best list rescoring 
-- See how n-gram order and smoothing aects WER when doing N-best list rescoring for Switchboard.
+- See how n-gram order and smoothing affects WER when doing N-best list rescoring for Switchboard.
 
 Lab4
 - Part 1: Play with FSM's and the IBM FSM toolkit
