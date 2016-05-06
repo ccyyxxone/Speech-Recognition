@@ -1,0 +1,212 @@
+
+########################################################################
+#   Lab 3: Language Modeling Fever
+#   EECS E6870: Speech Recognition
+#   Due: March 11, 2016 at 6pm
+########################################################################
+
+* Name: Yixing Chen, yc3094
+
+
+########################################################################
+#   Part 1
+########################################################################
+
+* Create the file "p1b.counts" by running "lab3_p1b.sh".
+  Submit the file "p1b.counts" by typing
+  the following command (in the directory ~/e6870/lab3/):
+
+      submit-e6870.py lab3 p1b.counts
+
+  More generally, the usage of "submit-e6870.py" is as follows:
+
+      submit-e6870.py <lab#> <file1> <file2> <file3> ...
+
+  You can submit a file multiple times; later submissions
+  will overwrite earlier ones.  Submissions will fail
+  if the destination directory for you has not been created
+  for the given <lab#>; contact us if this happens.
+
+
+* Can you name a word/token that will have a different unigram count
+  when counted as a history (i.e., histories are immediately to the
+  left of a word that we wish to predict the probability of) and
+  when counted as a regular unigram (i.e., exactly in a position that we
+  wish to predict the probability of)?
+
+-> The beginning-of-sentence marker.
+
+
+ *Sometimes in practice, the same token is used as both a
+  beginning-of-sentence marker and end-of-sentence marker.
+  In this scenario, why is it a bad idea to count these markers
+  at the beginnings of sentences (in addition to at the ends of
+  sentences) when computing regular unigram counts?
+
+-> Because the beginning-of-sentence markers are only useful in bigram, trigram and higher n-grams, in those grams, we should use the beginning-of-sentence markers before the fist word in the sentence in process of calculating probability, however, in the unigram, the beginning-of-sentence markers are useless so that it’s a bad idea to count these markers.
+
+
+* In this lab, we update counts for each sentence separately, which
+  precludes the updating of n-grams that span two different sentences.
+  A different strategy is to concatenate all of the training sentences
+  into one long word sequence (separated by the end-of-sentence token, say)
+  and to update counts for all n-grams in this long sequence.  In this
+  method, we can update counts for n-grams that span different sentences.
+  Is this a reasonable thing to do?  Why or why not?
+
+-> No. If the all sentences are totally irrelevant and uncontinuous, simply concatenating these sentences may lead to a very strange sentence which may have no meaning and even cannot be read and understood. So it’s not reasonable to concatenate all sentences into one long word sequence.
+
+
+########################################################################
+#   Part 2
+########################################################################
+
+* Create the file "p2b.probs" by running "lab3_p2b.sh".
+  Submit the following files:
+
+      submit-e6870.py lab3 p2b.probs
+
+
+########################################################################
+#   Part 3
+########################################################################
+
+* Describe a situation where P_MLE() will be the dominant term
+  in the Witten-Bell smoothing equation (e.g., describe how
+  many different words follow the given history, and how many
+  times each word follows the history):
+
+-> Consider this situation: if ch(w[i-1]) is much larger than N1+(w[i-1]), then P_MLE will be the dominant term in the Witten-Bell smoothing equation. Which means that a few of unique words follow the previous word, and these words appear together very frequently.
+
+
+* Describe a situation where P_backoff() will be the dominant term
+  in the Witten-Bell smoothing equation:
+
+-> In contrast to the above question. If ch(w[i-1]) is much smaller than N1+(w[i-1]), then P_backoff() will be the dominant term in the Witten-Bell smoothing equation. That is to say, the unique words combinations only appear together once.
+
+
+* Create the file "p3b.probs" by running "lab3_p3b.sh".
+  Submit the following files:
+
+      submit-e6870.py lab3 lang_model.C p3b.probs
+
+
+########################################################################
+#   Part 4
+########################################################################
+
+* What word-error rates did you find for the following conditions?
+  (Examine the file "p4.out" to extract this information.)
+
+->
+1-gram model (WB; full training set): 30.43% WER (399/1311 wds)
+2-gram model (WB; full training set): 28.60% WER (375/1311 wds)
+3-gram model (WB; full training set): 27.54% WER (361/1311 wds)
+
+MLE (3-gram; full training set): 29.29% WER (384/1311 wds)
+plus-delta (3-gram; full training set): 29.37% WER (385/1311 wds)
+Witten-Bell (3-gram; full training set): 27.54% WER (361/1311 wds)
+
+2000 sentences training (3-gram; WB): 29.21% WER (383/1311 wds)
+20000 sentences training (3-gram; WB): 29.52% WER (387/1311 wds)
+200000 sentences training (3-gram; WB): 28.53% WER (374/1311 wds)
+
+
+* What did you learn in this part?
+
+->
+From above data, we can learn that:
+1. When we increase n in n-grams, the accuracy will be higher.
+2. plus-delta doesn’t work well in our training, whereas the Witten-Bell works well, it can efficiently increase the accuracy.
+3. A very large number of sentences training may help to increase the accuracy. This “very large number” means from 20000 to 200000, however, from 2000 to 20000, the accuracy doesn’t change, so we should train large enough number of sentences to improve the accuracy.
+
+
+* When calculating perplexity we need to normalize by the
+  number of words in the data.  When counting the number
+  of words for computing PP, one convention is
+  to include the end-of-sentence token in this count.
+  For example, we would count the sentence "WHO IS THE MAN"
+  as five words rather than four.  Why might this be a good
+  idea?
+
+-> Count the end-of-sentence token can make sure that this is a complete sentence and get the correct probability, for example, if we don’t count the end-of-sentence token, “WHO IS THE” will always have higher probability than “WHO IS THE MAN”. The end-of-sentence token can help to get the correct probability distribution.
+
+
+* If the sentence "OH I CAN IMAGINE" has the following trigram probabilities:
+
+      P(OH | <s> <s>) = 0.063983
+      P(I | <s> OH) = 0.126221
+      P(CAN | OH I) = 0.006285
+      P(IMAGINE | I CAN) = 0.000010
+      P(</s> | CAN IMAGINE) = 0.030753
+
+  (<s> is the beginning-of-sentence marker, </s> is the end-of-sentence marker)
+
+  what is the perplexity of this sentence (using the convention mentioned
+  in the last question)?
+
+->
+Pavg = (0.063983 * 0.126221 * 0.006285 * 0.000010 * 0.030753) ^ (1/5)
+= 0.0068972790529575
+
+Perplexity = 1 / Pavg
+= 144.98
+
+
+* For a given task, we can vary the vocabulary size; with smaller
+  vocabularies, more words will be mapped to the unknown token.
+  Can you say anything about how PP will vary with vocabulary size,
+  given the same training and test set (and method for constructing
+  the LM)?
+
+-> In lecture6_lm, we know that PP is branching factor of search space, uniform unigram LM over k words => PP = k, that is to say, under a uniform probability model, the perplexity is roughly equal to the vocabulary size. So the PP will vary with vocabulary size.
+
+
+* When handling silence, one option is to treat it as a "transparent" word
+  as in the lab.  Another way is to not treat it specially, i.e., to treat it
+  as just another word in the vocabulary.  What are some
+  advantages/disadvantages of each of these approaches?
+
+->
+Treat it as a “transparent” word:
+advantages:
+1. Easy to implement, we can just skip it.
+2. Eliminate some disturbance.
+disadvantage:
+1. If the long silence has special meaning, we may ignore it.
+
+Treat it as just another word in the vocabulary
+advantages:
+1. We will not miss any important or special meaning of silence.
+disadvantage:
+1. More complex in implementation.
+2. May cause some disturbance.
+
+########################################################################
+#   Wrap Up
+########################################################################
+
+After filling in all of the fields in this file, submit this file
+using the following command:
+
+    submit-e6870.py lab3 lab3.txt
+
+The timestamp on the last submission of this file (if you submit
+multiple times) will be the one used to determine your official
+submission time (e.g., for figuring out if you handed in the
+assignment on time).
+
+To verify whether your files were submitted correctly, you can
+use the command:
+
+    check-e6870.py lab3
+
+This will list all of the files in your submission directory,
+along with file sizes and submission times.
+
+
+########################################################################
+#
+########################################################################
+
+

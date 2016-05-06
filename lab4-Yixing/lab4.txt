@@ -1,0 +1,334 @@
+
+########################################################################
+#   Lab 4 -- Large Vocabulary Decoding: A Love Story
+#   EECS E6870: Speech Recognition
+#   Due: Friday, April 1, 2016 at 6:00pm
+########################################################################
+
+* Name: Yixing Chen, yc3094
+
+
+########################################################################
+#   Part 1
+########################################################################
+
+* Create a single FSA "p1a.fsm" that represents the strings "I LIKE BEARS"
+  and "BEARS I LIKE".  Turn this into an FST by running the command
+
+      FsmOp p1a.fsm -make-transducer p1a.fst
+
+  List "p1a.fsm" below.
+
+->
+p1a.fsm
+1 2 I
+2 3 LIKE
+3 4 BEARS
+1 5 BEARS
+5 6 I
+6 4 LIKE
+4
+
+p1a.fst
+# states: 6
+# input-voc: /dynamic/
+# output-voc: /dynamic/
+1	2	I	I
+1	3	BEARS	BEARS
+2	4	LIKE	LIKE
+3	5	I	I
+4	6	BEARS	BEARS
+5	6	LIKE	LIKE
+6
+
+
+
+* Create an FST "p1b.fst" with a single state that rewrites all word sequences
+  (containing only the words I, LIKE, and BEARS) to themselves except
+  that the word "LIKE" is changed to "LOVE".  List "p1b.fst" below.
+
+->
+p1b.fst
+# states: 1
+# input-voc: /dynamic/
+# output-voc: /dynamic/
+1	1	I	I
+1	1	LIKE	LOVE  
+1	1	BEARS	BEARS
+1
+
+
+* Compose the FST "p1a.fst" and the FST "p1b.fst" via the command
+
+      FsmOp p1a.fst p1b.fst -compose p1c.fst
+      
+  and look at the resulting FSM "p1c.fst".  While we did not cover
+  FST/FST composition in class, can you describe how FST/FST composition
+  behaves?  If it helps, you can create more example FSM's for yourself and
+  use "FsmOp" to see how things behave.
+
+-> 
+In p1c.fst, we can find that compared with p1a.fst, the ‘like’ have been changed to ‘love’, and this is because in p1b.fst, we use the “1 1 LIKE LOVE” that changes ‘like’ to ‘love’ in p1c.fst.
+
+
+* Look at the provided FSM "p1d.fsm".  Using only your FSM "p1a.fsm",
+  the provided FSM "p1d.fsm", and "FsmOp", create an FSM that
+  represents all three-word strings (containing only the words I, LIKE,
+  and BEARS) *except* for the strings "I LIKE BEARS" and "BEARS I LIKE".
+  (This should include three-word strings with repeated words, e.g., "I I I".)
+  You will need to use the operations "-concat", "-determinize",
+  and "-difference" in "FsmOp".  Run "FsmOp" with no arguments
+  to get a little help on these commands.  To find out more
+  about what these commands do, just make sample FSM's and run "FsmOp"
+  on them.  NOTE: for the "-difference" operation to work correctly, the
+  input FSM's must be determinized.  Put the resulting FSM in "p1e.fsm".
+  To check whether this FSM is correct, run
+  "FsmOp p1e.fsm -gen" to print all strings this FSM accepts.
+  List the commands you executed to create "p1e.fsm" (you need
+  not submit any files for Part 1):
+
+->
+FsmOp p1d.fsm p1d.fsm -concat p1d.fsm -concat p1a.fsm -difference > p1e.fsm
+
+
+########################################################################
+#   Part 2
+########################################################################
+
+* In the example in the lab write-up, the first thing we do
+  is convert "wd.fsm" from an acceptor into a transducer.
+  Why do we do this, i.e., in what way would the final graph
+  be lacking if we were to keep the graph an acceptor the whole
+  way and used the same expansion recipe given in the example?
+
+->
+If we don’t covert the “wd.fsm” from an acceptor into a transducer, we will lose some information about <epsilon> because some of the labels with <epsilon> will indicates that we meet the new series of recognition. Besides, without covering the “wd.fsm”, when we try to get the hmm, we may meet some errors and cannot get the correct result.
+
+
+* Edit the FSM's "wd2lx.fsm" and "lx2pn.fsm" so that they can
+  handle an additional word in the vocabulary: BRITNEY,
+  with a single pronunciation variant:
+
+      BRITNEY(01)    | B R IH TD N IY
+
+  To test them, expand the word FSM "wd3.fsm" containing the
+  string "I LIKE BRITNEY" to the phone level using these transducers.
+
+  Submit the files "wd2lx.fsm" and "lx2pn.fsm" by typing
+  the following command (in the directory ~/e6870/lab4/):
+
+      submit-e6870.py lab4 wd2lx.fsm lx2pn.fsm
+
+  More generally, the usage of "submit-e6870.py" is as follows:
+
+      submit-e6870.py <lab#> <file1> <file2> <file3> ...
+
+  You can submit a file multiple times; later submissions
+  will overwrite earlier ones.  Submissions will fail
+  if the destination directory for you has not been created
+  for the given <lab#>; contact us if this happens.
+
+
+* On slide 59 of lecture 9, we present an FST that can optionally
+  insert any number of silences between words (over the vocabulary
+  {A, B, C}).  Can you make an FST "addsil.fsm" that will optionally insert
+  at most one silence between words (and at the beginning and end of
+  an utterance), for the vocabulary {I, LIKE, BRITNEY}?
+  To test this, compose this with "wd3.fsm" to create the file "wd3sil.fsm".
+  You can look at "wd3sil.target.fsm" to see what the
+  target "wd3sil.fsm" looks like.  (Note that it's possible to create
+  equivalent FSM's that look quite different; e.g., if you renumber the
+  states in an FSM, the FSM will still have the same semantics.)
+
+  Submit "addsil.fsm":
+
+      submit-e6870.py lab4 addsil.fsm
+
+
+* Examine the file "tree.txt".  What
+  type of decision-tree is this, i.e., triphone, quinphone, etc.?
+
+->Triphone.
+
+
+* For the phone IH in BRITNEY, manually compute which
+  leaves correspond to each of its three states by
+  examining the corresponding decision trees in "tree.txt".
+
+->
+IH_1: 149
+IH_2: 152
+IH_3: 155
+
+
+* In the file "small_lm.fsm", identify the index of the state
+  corresponding to the unigram backoff state, i.e., the state corresponding
+  to the one labeled with "epsilon" on slide 86 of lecture 9.
+  (Hint: there is exactly one such state in the whole graph.):
+
+-> State 1
+
+
+* In the file "small_graph.fsm", will there also be a unique
+  unigram backoff state?  Why or why not?
+
+->
+No, there is no such unique unigram back state. This graph is like a chain list, so there is not a unique unigram backoff state which has edges to all other states.
+
+
+* If we run determinization on "small_lm.fsm", we will run out of memory
+  because the resulting FSM is very, very large.  Can you explain
+  why this happens?  (Hint: The key is in the <epsilon> backoff arcs.
+  What will a typical state set in determinization look like, and
+  what will be its outgoing arcs.
+  Hint: Will the number of states increase a lot,
+  the number of arcs increase a lot, or both?)
+  (This is one reason why LVCSR decoders need to handle skip arcs,
+  because trying to optimize these out will make graphs much larger.)
+
+->
+If we run determination on “small_lm.fm”, the number of possible paths will be larger because the epsilon back arcs may move to next state or leave at the original stage. Since the number of possible paths greatly grow, we may run out of memory.
+The typical state set in determination is like the 93rd and 98th page of lecture9_dcd.pdf.
+
+
+########################################################################
+#   Part 3
+########################################################################
+
+* Instead of using a heap to iterate through active states in order at
+  each frame, another idea is to sort all active cells in "curFrame" by
+  state number at the beginning of processing each frame.  Why does sorting
+  all of the cells beforehand not completely address the handling of skip arcs?
+
+->
+Because just sorting all active cells in “curFrame” by state number at the beginning of processing each frame is not enough. Actually, we should be able to handle new cells being inserted into “curFrame” in the loop, so the data should be always sorted, that is why just sorting it at the beginning of the process is not enough. And when we use the heap, we can maintain the sort, so we should use heap rather than sorting all cells at the beginning of processing each frame.
+
+
+* Create the file "p3b.out" containing the output of
+  running "lab4_p3b.sh" (i.e., run "lab4_p3b.sh | tee p3b.out").
+  Create the file "p3d.out" containing the output of
+  running "lab4_p3d.sh" (i.e., run "lab4_p3d.sh | tee p3d.out").
+  Submit the following files:
+
+      submit-e6870.py lab4 p3b.out p3d.out
+
+
+########################################################################
+#   Part 4
+########################################################################
+
+* The Viterbi algorithm attempts to identify the most likely complete path
+  through an HMM given some data.  When using pruning, it is possible
+  that no complete paths are found at all.  Describe how to detect
+  when this has happened.  When not using pruning, is it also possible
+  that no complete paths are found?  Why or why not?
+
+->
+If all log probability of states are g_zeroprob, we will find that no complete paths are found.
+No, we must be able find the complete path. Actually, if it’s a validate HMM with positive transfer probability, there must be a complete path.
+
+
+* Create the file "p4b.out" containing the output of
+  running "lab4_p4b.sh" (i.e., run "lab4_p4b.sh | tee p4b.out").
+  Submit this file as well as your source code, e.g.,
+
+      submit-e6870.py lab4 lab4_vit.C p4b.out
+
+  Don't forget to submit your source code!!  (If you implemented
+  rank pruning, make sure the version of the source code you
+  submit includes this.)
+
+
+* If you implemented rank pruning, create "p4c.out" and
+  "p4d.out" by running "lab4_p4c.sh | tee p4c.out" and
+  "lab4_p4d.sh | tee p4d.out".  Submit these files:
+
+      submit-e6870.py lab4 p4c.out p4d.out
+
+  Describe what algorithm you used to find the rank pruning
+  threshold:
+
+->
+Use the sample code in lab4.pdf, put all curLogProb into a vector, sort the vector(from large to small), then find the k-th highest log prob. If the size of vector(cellCnt) is smaller than k (beamStateCnt), k-th highest log prob = the smallest value in vector. And if the k is 0, turn off rank pruning (use if sentence).
+
+
+########################################################################
+#   Part 5
+########################################################################
+
+* What word-error rates and real-time factors did you find for the
+  following conditions?
+  (Examine the file "p5.out" to extract this information.)
+
+->
+WSJ decoding, beam = 3:
+28.12% WER (54/192 wds)
+0.05 xRT (0.0% front end; 96.6% GMM; 3.4% search)
+
+WSJ decoding, beam = 5:
+15.10% WER (29/192 wds)
+0.06 xRT (0.0% front end; 79.1% GMM; 20.9% search)
+
+WSJ decoding, beam = 10:
+15.10% WER (29/192 wds)
+0.25 xRT (0.0% front end; 19.2% GMM; 80.8% search)
+
+WSJ decoding, 3k voc, small LM, beam = 7:
+15.10% WER (29/192 wds)
+0.10 xRT (0.0% front end; 48.5% GMM; 51.5% search)
+
+WSJ decoding, 21k voc, small LM, beam = 7:
+16.15% WER (31/192 wds)
+0.14 xRT (0.0% front end; 35.3% GMM; 64.7% search)
+
+WSJ decoding, 21k voc, large LM, beam = 7:
+12.50% WER (24/192 wds)
+0.18 xRT (0.0% front end; 27.2% GMM; 72.8% search)
+
+* What fraction of the time was spend on front end vs. GMM probs vs.
+  Viterbi search for the following conditions?
+  (Examine the file "p5.out" to extract this information.)
+
+->
+isolated digit decoding:
+0.01 xRT (56.3% front end; 42.3% GMM; 0.0% search)
+
+WSJ decoding, 21k voc, large LM, beam = 7:
+0.18 xRT (0.0% front end; 27.2% GMM; 72.8% search)
+
+
+* What did you learn in this part?
+
+-> 
+From the above data, it’s obviously that with the higher beam, the xRT is larger. 
+Besides, I know that there are two ways of pruning, and pruning is really important because it can effectively decrease the time.
+
+
+########################################################################
+#   Wrap Up
+########################################################################
+
+After filling in all of the fields in this file, submit this file
+using the following command:
+
+    submit-e6870.py lab4 lab4.txt
+
+The timestamp on the last submission of this file (if you submit
+multiple times) will be the one used to determine your official
+submission time (e.g., for figuring out if you handed in the
+assignment on time).
+
+To verify whether your files were submitted correctly, you can
+use the command:
+
+    check-e6870.py lab4
+
+This will list all of the files in your submission directory,
+along with file sizes and submission times.
+
+
+########################################################################
+#
+########################################################################
+
+

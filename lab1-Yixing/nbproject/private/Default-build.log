@@ -1,0 +1,7 @@
+g++ -Wall -g -I/user1/faculty/stanchen/pub/boost  -c -o lab1.o lab1.C
+In file included from lab1.C:5:
+./util.H:23:10: fatal error: 'boost/format.hpp' file not found
+#include <boost/format.hpp>
+         ^
+1 error generated.
+make: *** [lab1.o] Error 1

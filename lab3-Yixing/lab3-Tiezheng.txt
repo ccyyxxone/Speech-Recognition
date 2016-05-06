@@ -1,0 +1,234 @@
+
+########################################################################
+#   Lab 3: Language Modeling Fever
+#   EECS E6870: Speech Recognition
+#   Due: March 11, 2016 at 6pm
+########################################################################
+
+* Name: Tiezheng Li (tl2693)
+
+
+########################################################################
+#   Part 1
+########################################################################
+
+* Create the file "p1b.counts" by running "lab3_p1b.sh".
+  Submit the file "p1b.counts" by typing
+  the following command (in the directory ~/e6870/lab3/):
+
+      submit-e6870.py lab3 p1b.counts
+
+  More generally, the usage of "submit-e6870.py" is as follows:
+
+      submit-e6870.py <lab#> <file1> <file2> <file3> ...
+
+  You can submit a file multiple times; later submissions
+  will overwrite earlier ones.  Submissions will fail
+  if the destination directory for you has not been created
+  for the given <lab#>; contact us if this happens.
+
+
+* Can you name a word/token that will have a different unigram count
+  when counted as a history (i.e., histories are immediately to the
+  left of a word that we wish to predict the probability of) and
+  when counted as a regular unigram (i.e., exactly in a position that we
+  wish to predict the probability of)?
+
+-> The beginning-of-sentence marker. 
+
+
+ *Sometimes in practice, the same token is used as both a
+  beginning-of-sentence marker and end-of-sentence marker.
+  In this scenario, why is it a bad idea to count these markers
+  at the beginnings of sentences (in addition to at the ends of
+  sentences) when computing regular unigram counts?
+
+-> The beginning markers is only used to determine which word is likely
+   to be at the beginning of the sentence, there is no word or token that 
+   the beginning marker is following, it will only appear in bigram or higher
+   grams, so the unigram of beginning marker is useless. We should not 
+   count them.
+   On the other hand, count the end-of-sentence is useful because if we
+   do not count end-of-sentence mark, a grammartical not complete sentence
+   "I love the" would have higher probability than other complete sentence.
+   Which may cause some problems.
+
+
+* In this lab, we update counts for each sentence separately, which
+  precludes the updating of n-grams that span two different sentences.
+  A different strategy is to concatenate all of the training sentences
+  into one long word sequence (separated by the end-of-sentence token, say)
+  and to update counts for all n-grams in this long sequence.  In this
+  method, we can update counts for n-grams that span different sentences.
+  Is this a reasonable thing to do?  Why or why not?
+
+-> I don't think it resonable. Since we cannot guarantee that the sentences
+   we are processing is related and continuous in their meanings. In other words they maybe irrelevant in language. Hence there is no reason to 
+   include that in the language model.
+
+
+########################################################################
+#   Part 2
+########################################################################
+
+* Create the file "p2b.probs" by running "lab3_p2b.sh".
+  Submit the following files:
+
+      submit-e6870.py lab3 p2b.probs
+
+
+########################################################################
+#   Part 3
+########################################################################
+
+* Describe a situation where P_MLE() will be the dominant term
+  in the Witten-Bell smoothing equation (e.g., describe how
+  many different words follow the given history, and how many
+  times each word follows the history):
+
+-> If hist(w_{i-1}) is much larger than N1+(w_{i - 1}) then MLE would
+   be the dominant term. That is, only a small number of unique words
+   follows the previous word, but the combinations are very common, they
+   appear together a lot of times.
+
+
+* Describe a situation where P_backoff() will be the dominant term
+  in the Witten-Bell smoothing equation:
+
+-> In constrast, if every combinition is unique and appear only once, 
+   then backoff will be the dominant term.
+
+
+* Create the file "p3b.probs" by running "lab3_p3b.sh".
+  Submit the following files:
+
+      submit-e6870.py lab3 lang_model.C p3b.probs
+
+
+########################################################################
+#   Part 4
+########################################################################
+
+* What word-error rates did you find for the following conditions?
+  (Examine the file "p4.out" to extract this information.)
+
+->
+1-gram model (WB; full training set): 30.43% WER (399/1311 wds)
+2-gram model (WB; full training set): 28.60% WER (375/1311 wds)
+3-gram model (WB; full training set): 27.54% WER (361/1311 wds)
+
+MLE (3-gram; full training set): 29.29% WER (384/1311 wds)
+plus-delta (3-gram; full training set): 29.37% WER (385/1311 wds)
+Witten-Bell (3-gram; full training set): 27.54% WER (361/1311 wds)
+
+2000 sentences training (3-gram; WB): 29.21% WER (383/1311 wds)
+20000 sentences training (3-gram; WB): 29.52% WER (387/1311 wds)
+200000 sentences training (3-gram; WB): 28.53% WER (374/1311 wds)
+
+
+* What did you learn in this part?
+
+-> We could see that increasing n in n-grams helps us in reaching higher
+   accuracy. But it also increases the complexity of caculation and running 
+   time.
+   The plus-delta smothing seems not working so efficiently. While the 
+   Witten-Bell smoothing helps in enhancing accuracy.
+   Larger amount of sentences in training helps. But the scale of input 
+   sentences should be large enough, simply increasing 2000 to 20000 is not
+   helpful in improving the recognition accuracy.
+
+
+* When calculating perplexity we need to normalize by the
+  number of words in the data.  When counting the number
+  of words for computing PP, one convention is
+  to include the end-of-sentence token in this count.
+  For example, we would count the sentence "WHO IS THE MAN"
+  as five words rather than four.  Why might this be a good
+  idea?
+
+-> We need the end-of-sentence token to make the bigram grammar a true
+   probability distribution. Without that, the sentence probabilities for 
+   all sentences of a given length would sum to one, and the probability 
+   of the whole language would be infinite.
+   Also, without an end-of-sentence marker, the probability of an
+   ungrammatical sequence "I love the" would always be higher than that 
+   of the longer sentence "I love the course".
+
+
+* If the sentence "OH I CAN IMAGINE" has the following trigram probabilities:
+
+      P(OH | <s> <s>) = 0.063983
+      P(I | <s> OH) = 0.126221
+      P(CAN | OH I) = 0.006285
+      P(IMAGINE | I CAN) = 0.000010
+      P(</s> | CAN IMAGINE) = 0.030753
+
+  (<s> is the beginning-of-sentence marker, </s> is the end-of-sentence marker)
+
+  what is the perplexity of this sentence (using the convention mentioned
+  in the last question)?
+
+-> 0.063983 * 0.126221 * 0.006285 * 0.000010 * 0.030753 = 1.56095e-11
+   p_avg = 1.56095e-11 ^ 1/5 = 0.00689727905
+   PP = 1 / p_avg = 144.984709524
+
+
+* For a given task, we can vary the vocabulary size; with smaller
+  vocabularies, more words will be mapped to the unknown token.
+  Can you say anything about how PP will vary with vocabulary size,
+  given the same training and test set (and method for constructing
+  the LM)?
+
+-> Under a uniform probability model, the perplexity is equal to the
+   vocabulary size. Perplexity can be thought of as the effective 
+   vocabulary size under the model: if, for example, the perplexity of
+   the model is 120 (even though the vocabulary size is say 10,000), 
+   then this is roughly equivalent to having an effective vocabulary 
+   size of 120. In this sence increasing vacabulary size will not affect
+   PP.
+
+
+* When handling silence, one option is to treat it as a "transparent" word
+  as in the lab.  Another way is to not treat it specially, i.e., to treat it
+  as just another word in the vocabulary.  What are some
+  advantages/disadvantages of each of these approaches?
+
+-> In the lab the transparent words can be skipped within a frame.
+   This is easy to implement and could eliminate some interference 
+   when there is much silence inside the sentence.(If someone speaks 
+   really slow). But sometimes silence may have meaning in language.
+   Like the pause may be of some kind of emphasis, or the sign of ending 
+   a sentence, a chapter. That may help in recognition. So in some techiques
+   I know, they add an insertion penalty for transparent words to improve
+   accuracy.
+   
+
+
+########################################################################
+#   Wrap Up
+########################################################################
+
+After filling in all of the fields in this file, submit this file
+using the following command:
+
+    submit-e6870.py lab3 lab3.txt
+
+The timestamp on the last submission of this file (if you submit
+multiple times) will be the one used to determine your official
+submission time (e.g., for figuring out if you handed in the
+assignment on time).
+
+To verify whether your files were submitted correctly, you can
+use the command:
+
+    check-e6870.py lab3
+
+This will list all of the files in your submission directory,
+along with file sizes and submission times.
+
+
+########################################################################
+#
+########################################################################
+
+

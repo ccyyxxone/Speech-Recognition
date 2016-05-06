@@ -1,0 +1,44 @@
+called: /Library/Developer/CommandLineTools/usr/bin/g++
+	/Users/YixingChen/Desktop/e6870
+	/Library/Developer/CommandLineTools/usr/bin/g++
+	-Wall
+	-g
+	-I/user1/faculty/stanchen/pub/boost
+	-c
+	-o
+	lab1.o
+	lab1.C
+
+called: /Library/Developer/CommandLineTools/usr/bin/g++
+	/Users/YixingChen/Desktop/e6870
+	/Library/Developer/CommandLineTools/usr/bin/g++
+	-Wall
+	-g
+	-I/user1/faculty/stanchen/pub/boost
+	-c
+	-o
+	lab1.o
+	lab1.C
+
+called: /Library/Developer/CommandLineTools/usr/bin/clang++
+	/Users/YixingChen/Desktop/e6870
+	/Library/Developer/CommandLineTools/usr/bin/clang++
+	-Wall
+	-g
+	-I/user1/faculty/stanchen/pub/boost
+	-c
+	-o
+	lab1.o
+	lab1.C
+
+called: /Library/Developer/CommandLineTools/usr/bin/clang++
+	/Users/YixingChen/Desktop/e6870
+	/Library/Developer/CommandLineTools/usr/bin/clang++
+	-Wall
+	-g
+	-I/user1/faculty/stanchen/pub/boost
+	-c
+	-o
+	lab1.o
+	lab1.C
+

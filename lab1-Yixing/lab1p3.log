@@ -1,0 +1,256 @@
+========================================================================
+For each individual run, we print the initials of the test and
+echo training speakers.
+========================================================================
+
+========================================================================
+Part I: Testing different front end configurations, with
+the test and training speakers being the same in each run.
+========================================================================
+
+------------------------------------------------------------------------
+Windowing alone.
+------------------------------------------------------------------------
+test: ac, train: ac
+  Accuracy: 9.09% (1/11), Error rate: 90.91% (10/11)
+test: ae, train: ae
+  Accuracy: 27.27% (3/11), Error rate: 72.73% (8/11)
+test: ag, train: ag
+  Accuracy: 27.27% (3/11), Error rate: 72.73% (8/11)
+test: ai, train: ai
+  Accuracy: 45.45% (5/11), Error rate: 54.55% (6/11)
+test: aj, train: aj
+  Accuracy: 18.18% (2/11), Error rate: 81.82% (9/11)
+test: al, train: al
+  Accuracy: 36.36% (4/11), Error rate: 63.64% (7/11)
+test: an, train: an
+  Accuracy: 9.09% (1/11), Error rate: 90.91% (10/11)
+test: aw, train: aw
+  Accuracy: 18.18% (2/11), Error rate: 81.82% (9/11)
+test: bd, train: bd
+  Accuracy: 9.09% (1/11), Error rate: 90.91% (10/11)
+test: bh, train: bh
+  Accuracy: 63.64% (7/11), Error rate: 36.36% (4/11)
+TOTAL: acc: 26.36% (29/110), ser: 73.64% (81/110)
+------------------------------------------------------------------------
+Windowing + FFT.
+------------------------------------------------------------------------
+test: ac, train: ac
+  Accuracy: 9.09% (1/11), Error rate: 90.91% (10/11)
+test: ae, train: ae
+  Accuracy: 27.27% (3/11), Error rate: 72.73% (8/11)
+test: ag, train: ag
+  Accuracy: 27.27% (3/11), Error rate: 72.73% (8/11)
+test: ai, train: ai
+  Accuracy: 45.45% (5/11), Error rate: 54.55% (6/11)
+test: aj, train: aj
+  Accuracy: 18.18% (2/11), Error rate: 81.82% (9/11)
+test: al, train: al
+  Accuracy: 36.36% (4/11), Error rate: 63.64% (7/11)
+test: an, train: an
+  Accuracy: 9.09% (1/11), Error rate: 90.91% (10/11)
+test: aw, train: aw
+  Accuracy: 18.18% (2/11), Error rate: 81.82% (9/11)
+test: bd, train: bd
+  Accuracy: 9.09% (1/11), Error rate: 90.91% (10/11)
+test: bh, train: bh
+  Accuracy: 63.64% (7/11), Error rate: 36.36% (4/11)
+TOTAL: acc: 26.36% (29/110), ser: 73.64% (81/110)
+------------------------------------------------------------------------
+Windowing + FFT + mel-bin (w/o log).
+------------------------------------------------------------------------
+test: ac, train: ac
+  Accuracy: 63.64% (7/11), Error rate: 36.36% (4/11)
+test: ae, train: ae
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: ag, train: ag
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: ai, train: ai
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: aj, train: aj
+  Accuracy: 90.91% (10/11), Error rate: 9.09% (1/11)
+test: al, train: al
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: an, train: an
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: aw, train: aw
+  Accuracy: 90.91% (10/11), Error rate: 9.09% (1/11)
+test: bd, train: bd
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: bh, train: bh
+  Accuracy: 81.82% (9/11), Error rate: 18.18% (2/11)
+TOTAL: acc: 92.73% (102/110), ser: 7.27% (8/110)
+------------------------------------------------------------------------
+Windowing + FFT + mel-bin (w/ log).
+------------------------------------------------------------------------
+test: ac, train: ac
+  Accuracy: 90.91% (10/11), Error rate: 9.09% (1/11)
+test: ae, train: ae
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: ag, train: ag
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: ai, train: ai
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: aj, train: aj
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: al, train: al
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: an, train: an
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: aw, train: aw
+  Accuracy: 90.91% (10/11), Error rate: 9.09% (1/11)
+test: bd, train: bd
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: bh, train: bh
+  Accuracy: 90.91% (10/11), Error rate: 9.09% (1/11)
+TOTAL: acc: 97.27% (107/110), ser: 2.73% (3/110)
+------------------------------------------------------------------------
+Windowing + FFT + mel-bin + DCT.
+------------------------------------------------------------------------
+test: ac, train: ac
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: ae, train: ae
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: ag, train: ag
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: ai, train: ai
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: aj, train: aj
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: al, train: al
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: an, train: an
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: aw, train: aw
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: bd, train: bd
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: bh, train: bh
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+TOTAL: acc: 100.00% (110/110), ser: 0.00% (0/110)
+------------------------------------------------------------------------
+Windowing + FFT + mel-bin + DCT (w/o Hamming).
+------------------------------------------------------------------------
+test: ac, train: ac
+  Accuracy: 90.91% (10/11), Error rate: 9.09% (1/11)
+test: ae, train: ae
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: ag, train: ag
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: ai, train: ai
+  Accuracy: 90.91% (10/11), Error rate: 9.09% (1/11)
+test: aj, train: aj
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: al, train: al
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: an, train: an
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: aw, train: aw
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: bd, train: bd
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: bh, train: bh
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+TOTAL: acc: 98.18% (108/110), ser: 1.82% (2/110)
+========================================================================
+Part II: Testing the full front end under different amounts
+of speaker variation.
+========================================================================
+
+------------------------------------------------------------------------
+Training speaker the same as the test speaker.
+------------------------------------------------------------------------
+test: ac, train: ac
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: ae, train: ae
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: ag, train: ag
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: ai, train: ai
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: aj, train: aj
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: al, train: al
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: an, train: an
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: aw, train: aw
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: bd, train: bd
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: bh, train: bh
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+TOTAL: acc: 100.00% (110/110), ser: 0.00% (0/110)
+------------------------------------------------------------------------
+Training speaker has same gender as the test speaker, and comes
+from the same part of the US.
+------------------------------------------------------------------------
+test: ac, train: ac
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: ae, train: st
+  Accuracy: 72.73% (8/11), Error rate: 27.27% (3/11)
+test: ag, train: ag
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: ai, train: nh
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: aj, train: aj
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: al, train: al
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: an, train: an
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: aw, train: if
+  Accuracy: 90.91% (10/11), Error rate: 9.09% (1/11)
+test: bd, train: bd
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: bh, train: pe
+  Accuracy: 81.82% (9/11), Error rate: 18.18% (2/11)
+TOTAL: acc: 94.55% (104/110), ser: 5.45% (6/110)
+------------------------------------------------------------------------
+Training speaker has same gender as the test speaker.
+------------------------------------------------------------------------
+test: ac, train: ac
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: ae, train: pd
+  Accuracy: 90.91% (10/11), Error rate: 9.09% (1/11)
+test: ag, train: br
+  Accuracy: 72.73% (8/11), Error rate: 27.27% (3/11)
+test: ai, train: rp
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: aj, train: cr
+  Accuracy: 72.73% (8/11), Error rate: 27.27% (3/11)
+test: al, train: dn
+  Accuracy: 72.73% (8/11), Error rate: 27.27% (3/11)
+test: an, train: ei
+  Accuracy: 81.82% (9/11), Error rate: 18.18% (2/11)
+test: aw, train: gg
+  Accuracy: 81.82% (9/11), Error rate: 18.18% (2/11)
+test: bd, train: aw
+  Accuracy: 100.00% (11/11), Error rate: 0.00% (0/11)
+test: bh, train: pe
+  Accuracy: 81.82% (9/11), Error rate: 18.18% (2/11)
+TOTAL: acc: 85.45% (94/110), ser: 14.55% (16/110)
+------------------------------------------------------------------------
+Training speaker has no relation to test speaker.
+------------------------------------------------------------------------
+test: ac, train: ae
+  Accuracy: 63.64% (7/11), Error rate: 36.36% (4/11)
+test: ae, train: pp
+  Accuracy: 45.45% (5/11), Error rate: 54.55% (6/11)
+test: ag, train: ca
+  Accuracy: 63.64% (7/11), Error rate: 36.36% (4/11)
+test: ai, train: rn
+  Accuracy: 81.82% (9/11), Error rate: 18.18% (2/11)
+test: aj, train: cf
+  Accuracy: 81.82% (9/11), Error rate: 18.18% (2/11)
+test: al, train: dc
+  Accuracy: 72.73% (8/11), Error rate: 27.27% (3/11)
+test: an, train: fd
+  Accuracy: 72.73% (8/11), Error rate: 27.27% (3/11)
+test: aw, train: gg
+  Accuracy: 81.82% (9/11), Error rate: 18.18% (2/11)
+test: bd, train: an
+  Accuracy: 72.73% (8/11), Error rate: 27.27% (3/11)
+test: bh, train: nr
+  Accuracy: 72.73% (8/11), Error rate: 27.27% (3/11)
+TOTAL: acc: 70.91% (78/110), ser: 29.09% (32/110)
