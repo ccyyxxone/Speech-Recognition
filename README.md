@@ -8,7 +8,7 @@ Part 1: Write a front end (Required)
 Part 2: Implement dynamic time warping (Optional) 
 - Write a function that implements DTW.
 Part 3: Evaluate dierent front ends using a DTW recognizer (Required) 
-- Run experiments on the TIDIGITS data set comparing the performance of dierent portions of the front end you implemented.
+- Run experiments on the TIDIGITS data set comparing the performance of different portions of the front end you implemented.
 
 Lab2
 Part 1: Implement the Viterbi algorithm 
